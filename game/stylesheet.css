@@ -1,0 +1,177 @@
+
+body
+{
+    background-color: #353535 !important;
+    text-align:center;
+    height: 100%;
+
+}
+
+h3
+{
+    font-family: 'Patua One', cursive !important;
+    color: #ff8533 !important;
+    font-size: 55px !important;
+    letter-spacing: 1 !important;
+    margin: 30px !important;
+}
+
+ canvas 
+ {
+    display: inline;
+    z-index: 0;
+    /*position: absolute;*/
+
+ }
+ .row
+ {
+     max-width: 100%;
+     
+ }
+ #timer
+ {
+    width: 110px;
+    font-size: 25px;
+    padding: 0;
+    margin: 0;
+    font-family: 'Bebas Neue', cursive;
+    color: white;
+ }
+/*------Buttons CSS---------*/
+ .btn2
+ {
+     border:1px solid #ff8533 !important;
+     color: white;
+     background-color: #ff8533;
+     height: 65px;
+     width: 70px;
+     margin: 50px !important;
+     padding: 50px !important;
+     border-radius: 25% !important;
+     font-size: 25px !important;
+     line-height: 0px !important; 
+     box-sizing: border-box !important;
+     font-family: "Arial Black", Gadget, sans-serif;
+ }
+.btn2:hover:enabled
+{
+     border:1px solid #ff8533 !important;
+     color: white !important;
+     background-color: #ff8533;
+     font-weight: 600;
+     height: 65px;
+     width: 70px;
+     margin: 50px !important;
+     padding: 55px !important;
+     border-radius: 25% !important;
+     font-size: 30px !important;
+     line-height: 0px !important; 
+} 
+.btn2:hover:disabled
+{
+
+     color: white !important;
+} 
+ .btn2.clicked
+ {
+     background-color: #66410a !important;
+     color: white !important;
+     outline: 0 !important;
+ }
+
+ .btn2:focus
+ {
+     background-color: #66410a !important;
+     color: white !important;
+     outline: 0 !important;
+ }
+
+
+ table.button_table
+ {
+     position: relative;
+     top: 70px;
+     text-align: center;
+     width: 100%;
+     border-spacing: 10px;
+     
+ }
+
+ table.game_table
+ {
+     position: relative;
+     left: 8%;
+ }
+ 
+
+
+ #start div
+ {
+    position: relative;
+    right:31px;
+ }
+ #pause div
+ {
+    position: relative;
+    right:36px;
+ }
+ #start:hover:enabled>div
+ {
+    position: relative;
+    right:40px;
+ }
+ #start:hover:enabled
+ {
+    margin:45px 0 !important;
+ }
+ #pause:hover:enabled
+ {
+    margin:45px 0 !important;
+ }
+ #pause:hover:enabled>div
+ {
+    position: relative;
+    right:50px;
+ }
+
+
+ .btn-danger, .btn-success
+ {
+     background-color: #ff4d07 !important;
+     border-color: white !important;
+ }
+/*------End Buttons CSS---------*/
+
+.modal-dialog div
+{
+    color: white;
+    background-color: #3a3a37;
+}
+
+#modal-result
+{
+    border: 1px solid white !important;
+    width: 100%;
+    text-align: left;
+}
+#modal-result td{ 
+
+padding: 15px !important;
+border: 1px solid white;
+}
+#exc,#good,#v_good,#wrong
+{
+    text-align: center;
+}
+
+#message_area
+{
+    position: absolute;
+    bottom: 200px;
+    left: 220px;
+    display: none;
+    z-index: 10;
+}
+
+
+
