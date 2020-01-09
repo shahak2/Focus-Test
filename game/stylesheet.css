@@ -140,7 +140,15 @@ h3
      background-color: #ff4d07 !important;
      border-color: white !important;
  }
+
+ .btn-difficulty
+ {
+     background-color: #ff4d07 !important;
+     border-color: white !important;
+ }
 /*------End Buttons CSS---------*/
+
+/*----------modal----------*/
 
 .modal-dialog div
 {
@@ -154,12 +162,12 @@ h3
     width: 100%;
     text-align: left;
 }
-#modal-result td{ 
-
-padding: 15px !important;
-border: 1px solid white;
+#modal-result td
+{ 
+    padding: 15px !important;
+    border: 1px solid white;
 }
-#exc,#good,#v_good,#wrong
+#exc,#good,#v_good,#wrong, #missed_jumps
 {
     text-align: center;
 }
@@ -171,7 +179,25 @@ border: 1px solid white;
     left: 220px;
     display: none;
     z-index: 10;
+    opacity: 0.9;
 }
 
 
+#difficulty_modal
+{
+    top: 35%;
+    width: 250px;
+    margin: auto;
+    padding: 0;
+    
+}
 
+#difficulty_modal div.modal-content
+{
+    width: 250px;
+}
+
+.btn-group-vertical
+{
+    width: 200px;
+}
