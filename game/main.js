@@ -12,15 +12,17 @@ ballImage.src = "images/dot.svg";
 ballImage.height = 33;
 ballImage.width = 33;
 
-const difficulty_delay = 1000;
+var difficulties = {
+    easy : { speed:1000, length:3*60, pause_delay: 10},
+    medium : { speed:750, length:5*60, pause_delay: 30},
+    hard : { speed:550, length:10*60, pause_delay: 60}
+} 
+
+var difficulty = difficulties.easy;
 
 var radius = 220;
 
 const interval_range = 30;
-
-const difficulty_pause = 10;
-
-const starting_time = 10*60;
 
 var intervals = [];
 
@@ -33,6 +35,8 @@ class ScoreTable {
         this.correct = new Array(3).fill(0);
         this.wrong = 0;
         this.count = -1;
+        this.missed_jumps = 0;
+        this.missed = false;
         this.game_started = false;
     }
 
@@ -53,7 +57,7 @@ class ScoreTable {
 var show_message; 
 $( document ).ready(function() {
     show_message = function(scr)
-    {   /* adding the correct img src - working, just need to vactorize last 2 images*/
+    {   
         switch(scr)
         {
             case 0: $('#message').attr("src", 'images/excellent_message.svg'); break;
@@ -66,13 +70,37 @@ $( document ).ready(function() {
             opacity: 0,
             bottom: "+=50",
           }, 1000, function() {
-            setTimeout(reset_position(),100);
+            reset_position();
           });
     }
+
+    
 });
+
+function set_difficulty_easy()
+{
+    difficulty = difficulties.easy;
+    start();
+}
+function set_difficulty_medium()
+{
+    difficulty = difficulties.medium;
+    start();
+}
+function set_difficulty_hard()
+{
+    difficulty = difficulties.hard;
+    start();
+}
+
+function get_difficulty()
+{
+    $('#difficulty_modal').modal('show');
+}
+
 function reset_position()
 {
-    $('#message_area').css('display','none').css('opacity','1').css('bottom','200px');
+    $('#message_area').css('display','none').css('opacity','0.9').css('bottom','200px');
 }
 
 function drawPattern()
@@ -117,44 +145,28 @@ function get_circle_positions(canvas, radius)
 function get_next_pause()
 // Randomizes the next pause.
 {
-    return Math.floor(Math.random() * difficulty_pause) + 10;
+    return Math.floor(Math.random() * difficulty.pause_delay) + 10;
 }
 
 function update(timeStamp)
 {     
-    if(pause == timeStamp)
-    {
-        index++;
-        pause = timeStamp + get_next_pause();
-        score.count=3;
-        var cnt_down = setInterval(function countdown()
-        {
-            score.count--;
-        },1000);
-        setTimeout(function() {
-            clearInterval(cnt_down);
-        }, 3000);
-    }
     
-    ctx.clearRect(0,0, canvas.width,canvas.height);
-    drawPattern();
     if (index >= interval_range - 1)
     {
         index = -1;
     }
     index++;
-    
+
+    ctx.clearRect(0,0, canvas.width,canvas.height);
+    drawPattern(); 
     drawBall(ctx, intervals[index].x,intervals[index].y);
- 
 }
 
 function update_timer(timeStamp)
 {
+    var minutes = Math.floor((difficulty.length - timeStamp) / 60);
+    var seconds =  (difficulty.length - timeStamp) - minutes * 60;
 
-    var minutes = Math.floor((starting_time - timeStamp) / 60);
-    var seconds =  (starting_time - timeStamp) - minutes * 60;
-
-    
     $("#timer").text("Timer: " + minutes.toString().padStart(2, '0') + ':' + 
     seconds.toString().padStart(2, '0'));
 }
@@ -173,7 +185,18 @@ function resume()
     score.game_started = true;
     $( "#start" ).prop('disabled',true);
     $( "#pause" ).prop('disabled',false);
-    g = setInterval(game,difficulty_delay);
+    g = setInterval(time, 1000);
+    var interval = setInterval(function()
+    {
+    if(score.game_started == false)
+    {
+        clearInterval(interval);
+    }
+    if (score.game_started == true)
+    {
+        update(timeStamp);
+    }
+    }, difficulty.speed); 
 }
 function start()
 {   
@@ -184,20 +207,59 @@ function start()
     index = Math.floor(Math.random() * intervals.length);
     pause = get_next_pause();
     timeStamp = 0;
-    g = setInterval(game,difficulty_delay);
-}
-function game()
-{
-    if(timeStamp == starting_time)
+    g = setInterval(time,1000);
+
+    var interval = setInterval(function()
     {
+    if(score.game_started == false)
+    {
+        clearInterval(interval);
+    }
+    if (score.game_started == true)
+    {
+        update(timeStamp);
+    }
+    }, difficulty.speed); 
+}
+function time()
+{
+    if (score.game_started == true)
+    {
+        if(timeStamp == difficulty.length)
+        {
         stop();
         return;
-    }
+        }
+    
+        if(score.count == 1)
+        {
+            if (score.missed == true)
+            {
+                show_message(5);
+                score.missed_jumps++;
+                score.missed = false;
+            }
+        }
 
-    update(timeStamp);
-    timeStamp++;
-    update_timer(timeStamp);
+        if(pause == timeStamp)
+        {
+        index++;
+        pause = timeStamp + get_next_pause();
+        score.count = 4;
+        score.missed = true;
+        }
+    
+        if(score.count >= 0)
+        {
+        score.count--;
+        }
+
+        timeStamp++;
+        update_timer(timeStamp);
+        
+    }
 }
+
 
 $(window).keypress(function track_score(e) {
     if (e.key === ' ' || e.key === 'Spacebar') {
@@ -205,23 +267,45 @@ $(window).keypress(function track_score(e) {
       e.preventDefault();
       if (score.game_started == true)
       {
-          if(score.count>0)
+          if(score.count > 0)
           {
-              show_message(3-score.count);
-              //alert("correct! " + String(3-score.count) + "Seconds")
+              score.missed = false;
+              show_message(3 - score.count);
               score.correct[score.count-1]++;
               score.count = -1;
           }
           else
           {
-              show_message(3);
-              score.wrong++;
-              //alert("wrong");
+            show_message(3);
+            score.wrong++;
           }
       }
     }
   })
 
+
+  function update_modal()
+  {
+      $('#exc').text(score.correct[2]);
+      $('#v_good').text(score.correct[1]);
+      $('#good').text(score.correct[0]);
+      $('#wrong').text(score.wrong);
+      $('#missed_jumps').text(score.missed_jumps);
+  }
+//------------------logic
+
+pattern.onload = drawPattern;
+
+intervals = get_circle_positions(canvas, radius);
+
+var pause;
+
+var score = new ScoreTable();
+
+
+
+
+/* ----------------------------phone mode-----------------------------------
   $('body').on('touchstart', function track_score(e) {
       if (score.game_started == true)
       {
@@ -236,28 +320,4 @@ $(window).keypress(function track_score(e) {
               alert("wrong");
           }
       }
-  });
-
-  function update_modal()
-  {
-      $('#exc').text(score.correct[2]);
-      $('#v_good').text(score.correct[1]);
-      $('#good').text(score.correct[0]);
-      $('#wrong').text(score.wrong);
-  }
-//------------------logic
-
-
-pattern.onload = drawPattern;
-
-intervals = get_circle_positions(canvas, radius);
-
-var pause;
-
-
-var score = new ScoreTable();
-
-
-
-
-
+  });*/
