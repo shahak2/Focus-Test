@@ -16,11 +16,11 @@
       <h3>JobTestPrep Feast Focus Test</h3>
     </div>
     
-    <div class="row">
+    <div class="row" id="game_row">
       <div class="col-md-3">
         <table class="button_table">
           <tr>
-            <td><button id="start" type="button" onclick="start()" class="btn btn2" ><div>Start</div></button></td>
+            <td><button id="start" type="button" onclick="get_difficulty()" class="btn btn2" ><div>Start</div></button></td>
           </tr>
           <tr>
             <td><button id="pause" type="button" onclick="stop()" class="btn btn2" disabled><div>Pause</div></button></td>
@@ -42,12 +42,12 @@
       </div>
     </div>
 
-      <!-- Modal -->
+      <!-- Modals -->
       <div class="modal fade" data-backdrop="static" id="pause_screen" tabindex="-1" role="dialog"  >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel">Test Paused</h4>
+              <h4 class="modal-title">Test Paused</h4>
             </div>
             <div class="modal-body">
               <table id="modal-result">
@@ -71,16 +71,34 @@
                     <td>Wrong:</td>
                     <td id="wrong"></td>
                   </tr>
+                  <tr>
+                    <td>Missed jumps:</td>
+                    <td id="missed_jumps"></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="start()">Restart</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="get_difficulty()">Restart</button>
               <button type="button" class="btn btn-success" data-dismiss="modal" onclick="resume()" >Resume</button>
             </div>
           </div>
         </div>
       </div>
+
+      
+      <div class="modal fade" data-backdrop="static" id="difficulty_modal" tabindex="-1" role="dialog" z-index="2"  >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body btn-group-vertical">
+              <button type="button" class="btn btn-difficulty" data-dismiss="modal"  onclick="set_difficulty_easy()">Easy</button>
+              <button type="button" class="btn btn-difficulty" data-dismiss="modal" onclick="set_difficulty_medium()" >Medium</button>
+              <button type="button" class="btn btn-difficulty" data-dismiss="modal" onclick="set_difficulty_hard()" >Hard</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     
     <script src="main.js"></script>
