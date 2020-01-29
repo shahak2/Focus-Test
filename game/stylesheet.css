@@ -201,3 +201,12 @@ h3
 {
     width: 200px;
 }
+
+#inst{
+    position: relative;
+    right: 100px;
+    margin-bottom: 15px;
+    color: black !important;
+    border-color: #DEDEDE !important;
+    background-color: #DEDEDE !important;
+}

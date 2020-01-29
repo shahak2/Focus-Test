@@ -34,8 +34,8 @@ class ScoreTable {
     constructor() {
         this.correct = new Array(3).fill(0);
         this.wrong = 0;
-        this.count = -1;
         this.missed_jumps = 0;
+        this.count = -1;
         this.missed = false;
         this.game_started = false;
     }
@@ -55,7 +55,9 @@ class ScoreTable {
 //--------------functions
 
 var show_message; 
+
 $( document ).ready(function() {
+
     show_message = function(scr)
     {   
         switch(scr)
@@ -66,15 +68,13 @@ $( document ).ready(function() {
             case 5: $('#message').attr("src", 'images/missed_message.svg'); break;
             default: $('#message').attr("src", 'images/wrong.svg'); break;
         }
-        $('#message_area').delay(100).css('display','block').animate({
+        $('#message_area').delay(10).css('display','block').animate({
             opacity: 0,
             bottom: "+=50",
-          }, 1000, function() {
+          }, 800, function() {
             reset_position();
           });
-    }
-
-    
+    }    
 });
 
 function set_difficulty_easy()
@@ -125,7 +125,6 @@ function get_circle_positions(canvas, radius)
 // Assign into an array the positions of dots on a circle with a given radius. The center of the circle is the center of the canvas.
 // The number of dots is set in a constant "interval_range".
 {
-
     var y = canvas.height / 2 - ballImage.height/2;
     var x = canvas.width / 2 - ballImage.width/2;
     var angle = 2 * Math.PI / interval_range;
@@ -148,7 +147,7 @@ function get_next_pause()
     return Math.floor(Math.random() * difficulty.pause_delay) + 10;
 }
 
-function update(timeStamp)
+function update() //Draws the board
 {     
     
     if (index >= interval_range - 1)
@@ -174,7 +173,7 @@ function update_timer(timeStamp)
 function stop()
 {
     clearInterval(g);
-    score.game_started = false;;
+    score.game_started = false;
     $( "#start" ).prop('disabled',false);
     $( "#pause" ).prop('disabled',true);
     update_modal();
@@ -182,9 +181,13 @@ function stop()
 }
 function resume()
 {
-    score.game_started = true;
-    $( "#start" ).prop('disabled',true);
-    $( "#pause" ).prop('disabled',false);
+    if(score.game_started == false)
+    {
+        $( "#start" ).prop('disabled',true);
+        $( "#pause" ).prop('disabled',false);
+        score.game_started = true;
+    }    
+    
     g = setInterval(time, 1000);
     var interval = setInterval(function()
     {
@@ -194,12 +197,21 @@ function resume()
     }
     if (score.game_started == true)
     {
-        update(timeStamp);
+        update();
     }
     }, difficulty.speed); 
 }
+function instructions()
+{
+    clearInterval(g);
+    score.game_started = false;
+    //$("#inst").trigger("blur");
+    console.log($("#instructions_btn"))
+}
+
 function start()
 {   
+    $('#resume').prop('disabled', false);
     score = new ScoreTable();
     score.game_started = true;
     $( "#start" ).prop('disabled',true);
@@ -217,10 +229,11 @@ function start()
     }
     if (score.game_started == true)
     {
-        update(timeStamp);
+        update();
     }
     }, difficulty.speed); 
 }
+
 function time()
 {
     if (score.game_started == true)
@@ -228,10 +241,11 @@ function time()
         if(timeStamp == difficulty.length)
         {
         stop();
+        $('#resume').prop('disabled', true);
         return;
         }
     
-        if(score.count == 1)
+        if(score.count == 1) //Missed a jump
         {
             if (score.missed == true)
             {
@@ -241,28 +255,28 @@ function time()
             }
         }
 
-        if(pause == timeStamp)
+        if(pause == timeStamp) // A jump occured 
         {
         index++;
         pause = timeStamp + get_next_pause();
         score.count = 4;
         score.missed = true;
         }
-    
+
         if(score.count >= 0)
         {
         score.count--;
         }
 
         timeStamp++;
-        update_timer(timeStamp);
-        
+        update_timer(timeStamp);   
     }
 }
 
-
 $(window).keypress(function track_score(e) {
     if (e.key === ' ' || e.key === 'Spacebar') {
+        if(down) return;
+        down = true;
       // ' ' is standard, 'Spacebar' was used by IE9 and Firefox < 37
       e.preventDefault();
       if (score.game_started == true)
@@ -270,19 +284,26 @@ $(window).keypress(function track_score(e) {
           if(score.count > 0)
           {
               score.missed = false;
-              show_message(3 - score.count);
+              let i = 3 - score.count;
+              show_message(i);
               score.correct[score.count-1]++;
               score.count = -1;
           }
           else
           {
-            show_message(3);
+            setTimeout(function(){ show_message(3);}, 600);
             score.wrong++;
           }
       }
     }
   })
 
+  down = false ;
+  document.addEventListener('keyup', function () 
+  {
+    setTimeout(function(){ down = false;}, 800);
+    
+  }, false);
 
   function update_modal()
   {
@@ -300,9 +321,12 @@ intervals = get_circle_positions(canvas, radius);
 
 var pause;
 
-var score = new ScoreTable();
+var score;
 
 
+jQuery.get('http://localhost/instuctions.txt', function(data) {
+    alert(data);
+});
 
 
 /* ----------------------------phone mode-----------------------------------
