@@ -1,0 +1,3 @@
+When the game starts a dot will move in constant intervals. At random moments, the dot will "jump" an interval.
+Press the "space" keyboard button when that happens. Your results will be basedon your response time and accuracy. 
+If the dot made a jump and you did not respond in three seconds, a message will be given.

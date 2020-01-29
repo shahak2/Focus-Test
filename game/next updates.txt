@@ -1,13 +1,10 @@
 Mandatory
 ---------
 
-1. count missed jumps and alert when missed a jump. Message after you have missed a jump after 3 seconds.
+1. read text to instructions
+2. countdown to start
+1. smartphone mode.
 
-2. Add difficulties - time frames, speed, intervals of random jumps.
-
-3. Check if we want it to work in smartphone mode.
-
- 
 ---------------------------------------
 
 

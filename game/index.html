@@ -13,7 +13,7 @@
   <body>
 
     <div class="row">
-      <h3>JobTestPrep Feast Focus Test</h3>
+      <h3>JobTestPrep Vigilance Focus Test</h3>
     </div>
     
     <div class="row" id="game_row">
@@ -37,7 +37,8 @@
                   Timer: 00:00
                 </div></td>
                 <td>
-                  <button data-toggle="modal" onclick="instructions()" data-target="#instructions_modal" id="instructions_btn" type="button" class="btn btn-success">
+                  <button data-toggle="modal" onclick="instructions()" data-target="#instruction_modal"
+                   id="inst" type="button" class="btn btn-success" >
                     Instructions
                   </button>
             </td>
@@ -45,7 +46,7 @@
             <tr>
               <td>
                 <canvas id="canvas" height="560px" width="840px"></canvas>
-                <div id="message_area"><img id="message" src="images/excellent_message.svg" class="game_message"></div>
+                <div id="message_area"><img id="message" src="" class="game_message"></div>
               </td>
             </tr>
           </table>
@@ -53,7 +54,7 @@
     </div>
 
       <!-- Modals -->
-      <div class="modal fade" data-backdrop="static" id="pause_screen" tabindex="-1" role="dialog"  >
+      <div class="modal fade" data-keyboard="false" data-backdrop="static" id="pause_screen" tabindex="-1" role="dialog"  >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -109,7 +110,7 @@
         </div>
       </div>
 
-      <div class="modal fade" data-backdrop="static" data-keyboard="false" id="instructions_modal" tabindex="-1" role="dialog" >
+      <div class="modal fade" data-backdrop="static" data-keyboard="false" id="instruction_modal" tabindex="-1" role="dialog" >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -118,7 +119,7 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-success" data-dismiss="modal" onclick="resume()">Resume</button>
+              <button type="button" id="inst_resume" class="btn btn-success" data-dismiss="modal" onclick="resume_from_instructions()">Resume</button>
             </div>
           </div>
         </div>

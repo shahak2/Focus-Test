@@ -74,7 +74,8 @@ $( document ).ready(function() {
           }, 800, function() {
             reset_position();
           });
-    }    
+    } 
+
 });
 
 function set_difficulty_easy()
@@ -174,39 +175,47 @@ function stop()
 {
     clearInterval(g);
     score.game_started = false;
-    $( "#start" ).prop('disabled',false);
     $( "#pause" ).prop('disabled',true);
     update_modal();
     $('#pause_screen').modal('show');
 }
-function resume()
+function resume(from_instructions = false)
 {
-    if(score.game_started == false)
+    if(from_instructions==false)
     {
         $( "#start" ).prop('disabled',true);
         $( "#pause" ).prop('disabled',false);
+    }
+    if(timeStamp > 0)
+    {
         score.game_started = true;
-    }    
-    
-    g = setInterval(time, 1000);
-    var interval = setInterval(function()
-    {
-    if(score.game_started == false)
-    {
-        clearInterval(interval);
+        g = setInterval(time, 1000);
+        var interval = setInterval(function()
+        {
+         if(score.game_started == false)
+        {
+           clearInterval(interval);
+        }
+        if (score.game_started == true)
+        {
+            update();
+        }
+        }, difficulty.speed); 
     }
-    if (score.game_started == true)
-    {
-        update();
-    }
-    }, difficulty.speed); 
 }
+
+function resume_from_instructions()
+{
+    resume(true);
+}
+
 function instructions()
 {
-    clearInterval(g);
-    score.game_started = false;
-    //$("#inst").trigger("blur");
-    console.log($("#instructions_btn"))
+    if(score.game_started == true)
+    {
+        clearInterval(g);
+        score.game_started = false;
+    }
 }
 
 function start()
@@ -313,6 +322,10 @@ $(window).keypress(function track_score(e) {
       $('#wrong').text(score.wrong);
       $('#missed_jumps').text(score.missed_jumps);
   }
+
+$('#instruction_modal').on('hidden.bs.modal',function(event){
+    event.stopImmediatePropagation();
+});
 //------------------logic
 
 pattern.onload = drawPattern;
@@ -321,14 +334,33 @@ intervals = get_circle_positions(canvas, radius);
 
 var pause;
 
-var score;
+var score = new ScoreTable();
+
+//$("#inst").click();-------------------------------------------------------------     Uncomment when done
 
 
-jQuery.get('http://localhost/instuctions.txt', function(data) {
-    alert(data);
-});
+/*
+var content
 
+function getInstructions()
+{   
+    var textfile;
+    if (window.XMLHttpRequest)
+    { 
+        textfile = new XMLHttpRequest(); 
+    }
+    textfile.onreadystatechange = function ()
+    {   
+        if (textfile.readyState == 4 && textfile.status == 200)
+        { 
+            content = textfile.responseText; 
+        }
+    }
+    textfile.open("GET", "instructions.txt", true);
+    alert(content);
+}
 
+*/
 /* ----------------------------phone mode-----------------------------------
   $('body').on('touchstart', function track_score(e) {
       if (score.game_started == true)
