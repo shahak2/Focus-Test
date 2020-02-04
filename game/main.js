@@ -60,6 +60,7 @@ $( document ).ready(function() {
 
     show_message = function(scr)
     {   
+        $('#message_area').css({"right": '300px'}); 
         switch(scr)
         {
             case 0: $('#message').attr("src", 'images/excellent_message.svg'); break;
@@ -77,6 +78,35 @@ $( document ).ready(function() {
     } 
 
 });
+
+function countdown() 
+    {
+        $('#message_area').css({"right": '300px'}); 
+            var i = 3;
+
+            var loop2 = setInterval(function(){
+                switch(i)
+                {
+                    case 1: $('#message').attr("src", 'images/one.png'); break;
+                    case 2: $('#message').attr("src", 'images/two.png'); break;
+                    case 3: $('#message').attr("src", 'images/three.png'); break;
+                    default: $('#message').attr("src", 'images/go.png'); break;
+                }
+                
+                $('#message_area').delay(10).css('display','block').animate({
+                    opacity: 0,
+                    bottom: "+=50",
+                    }, 800, function() {
+                    reset_position();
+                    });
+                    
+                if(i == 0)
+                {
+                    clearInterval(loop2);
+                }
+                i--;
+            }, 1010);
+    }
 
 function set_difficulty_easy()
 {
@@ -148,7 +178,7 @@ function get_next_pause()
     return Math.floor(Math.random() * difficulty.pause_delay) + 10;
 }
 
-function update() //Draws the board
+function update() //Draws the board and ball
 {     
     
     if (index >= interval_range - 1)
@@ -219,28 +249,31 @@ function instructions()
 }
 
 function start()
-{   
-    $('#resume').prop('disabled', false);
-    score = new ScoreTable();
-    score.game_started = true;
-    $( "#start" ).prop('disabled',true);
-    $( "#pause" ).prop('disabled',false);
-    index = Math.floor(Math.random() * intervals.length);
-    pause = get_next_pause();
-    timeStamp = 0;
-    g = setInterval(time,1000);
+{   countdown();
+    setTimeout(function(){
+        $('#resume').prop('disabled', false);
+        score = new ScoreTable();
+        score.game_started = true;
+        $( "#start" ).prop('disabled',true);
+        $( "#pause" ).prop('disabled',false);
+        index = Math.floor(Math.random() * intervals.length);
+        pause = get_next_pause();
+        timeStamp = 0;
+        g = setInterval(time,1000);
 
-    var interval = setInterval(function()
-    {
-    if(score.game_started == false)
-    {
-        clearInterval(interval);
-    }
-    if (score.game_started == true)
-    {
-        update();
-    }
-    }, difficulty.speed); 
+        var interval = setInterval(function()
+        {
+        if(score.game_started == false)
+        {
+            clearInterval(interval);
+        }
+        if (score.game_started == true)
+        {
+            update();
+        }
+        }, difficulty.speed); 
+     }, 3200);
+    
 }
 
 function time()
@@ -307,6 +340,28 @@ $(window).keypress(function track_score(e) {
     }
   })
 
+  
+
+$('#canvas').on('touchstart', function track_score(e) {
+// ----------------------------phone mode click on canvas-----------------------------------
+    if (score.game_started == true)
+    {
+        if(score.count > 0)
+        {
+            score.missed = false;
+            let i = 3 - score.count;
+            show_message(i);
+            score.correct[score.count-1]++;
+            score.count = -1;
+        }
+        else
+        {
+          setTimeout(function(){ show_message(3);}, 600);
+          score.wrong++;
+        }
+    }
+  });
+
   down = false ;
   document.addEventListener('keyup', function () 
   {
@@ -323,9 +378,23 @@ $(window).keypress(function track_score(e) {
       $('#missed_jumps').text(score.missed_jumps);
   }
 
-$('#instruction_modal').on('hidden.bs.modal',function(event){
+$('#instruction_modal').on('hidden.bs.modal',function(event){//cancles focus of modal button
     event.stopImmediatePropagation();
 });
+
+function get_instructions()
+{
+    var text = 'When the game starts a dot will move in constant intervals. At random moments, the dot will "jump" an interval.'+
+    'Your results will be based on your response time and accuracy.' +
+    "If the dot made a jump and you did not respond in three seconds, a message will be given." +"<br/><br/>" +
+    '<b>Desktop Mode</b> - Press the "space" keyboard button when that happens.'+
+    "<b>Smartphone mode</b> - In order to mark a jump occured while using a smartphone, tap the area with the pattern." 
+
+    $("#instructions_modal").html(text);
+}
+
+
+
 //------------------logic
 
 pattern.onload = drawPattern;
@@ -336,44 +405,11 @@ var pause;
 
 var score = new ScoreTable();
 
-//$("#inst").click();-------------------------------------------------------------     Uncomment when done
+get_instructions();
+
+$("#inst").click();//-------------------------------------------------------------     Uncomment when done
 
 
-/*
-var content
 
-function getInstructions()
-{   
-    var textfile;
-    if (window.XMLHttpRequest)
-    { 
-        textfile = new XMLHttpRequest(); 
-    }
-    textfile.onreadystatechange = function ()
-    {   
-        if (textfile.readyState == 4 && textfile.status == 200)
-        { 
-            content = textfile.responseText; 
-        }
-    }
-    textfile.open("GET", "instructions.txt", true);
-    alert(content);
-}
 
-*/
-/* ----------------------------phone mode-----------------------------------
-  $('body').on('touchstart', function track_score(e) {
-      if (score.game_started == true)
-      {
-          if(score.count>=0)
-          {
-              score.correct[score.count]++;
-              score.count = -1;
-          }
-          else
-          {
-              score.wrong++;
-              alert("wrong");
-          }
-      }
-  });*/
+
