@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JobTestPrep Vigilance Test</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Patua+One&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <div class="row">
+      <h3>JobTestPrep Vigilance Test</h3>
+    </div>
+    
+    <div class="row" id="game_row">
+      <div class="col-md-3">
+        <table class="button_table">
+          <tr>
+            <td><button id="start" type="button" onclick="get_difficulty()" class="btn btn2" ><div>Start</div></button></td>
+          </tr>
+          <tr>
+            <td><button id="pause" type="button" onclick="stop()" class="btn btn2" disabled><div>Pause</div></button></td>
+          </tr>
+        </table>
+        
+        
+      </div>
+        <div class="col-md-9 game_container">
+          <table class="game_table">
+            <tr>
+              <td>
+                <div id="timer">
+                  Timer: 00:00
+                </div></td>
+                <td>
+                  <button data-toggle="modal" onclick="instructions()" data-target="#instruction_modal"
+                   id="inst" type="button" class="btn btn-success" >
+                    Instructions
+                  </button>
+            </td>
+          </tr>
+            <tr>
+              <td>
+                <canvas id="canvas" height="560px" width="840px"></canvas>
+                <div id="message_area"><img id="message" src="" class="game_message"></div>
+              </td>
+            </tr>
+          </table>
+      </div>
+    </div>
+
+      <!-- Modals -->
+      <div class="modal fade" data-keyboard="false" data-backdrop="static" id="pause_screen" tabindex="-1" role="dialog"  >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Test Paused</h4>
+            </div>
+            <div class="modal-body">
+              <table id="modal-result">
+                <tbody>
+                  <tr>
+                    <h5>Your Score</h5>
+                  </tr>
+                  <tr >
+                    <td>Excellent:</td>
+                    <td id="exc"></td>
+                  </tr>
+                  <tr >
+                    <td>Very Good:</td>
+                    <td id="v_good"></td>
+                  </tr>
+                  <tr >
+                    <td>Good:</td>
+                    <td id="good"></td>
+                  </tr>
+                  <tr>
+                    <td>Wrong:</td>
+                    <td id="wrong"></td>
+                  </tr>
+                  <tr>
+                    <td>Missed jumps:</td>
+                    <td id="missed_jumps"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="get_difficulty()">Restart</button>
+              <button type="button" id="resume" class="btn btn-success" data-dismiss="modal" onclick="resume()" >Resume</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="modal fade" data-backdrop="static" id="difficulty_modal" tabindex="-1" role="dialog" z-index="2"  >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body btn-group-vertical">
+              <button type="button" class="btn btn-difficulty" data-dismiss="modal"  onclick="set_difficulty_easy()">Easy - 3:00 minutes</button>
+              <button type="button" class="btn btn-difficulty" data-dismiss="modal" onclick="set_difficulty_medium()" >Medium -  5:00 minutes</button>
+              <button type="button" class="btn btn-difficulty" data-dismiss="modal" onclick="set_difficulty_hard()" >Hard - 10:00 minutes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" data-backdrop="static" data-keyboard="false" id="instruction_modal" tabindex="-1" role="dialog" >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Instructions</h4>
+            </div>
+            <div class="modal-body">
+              <div id="instructions_modal">
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="inst_resume" class="btn btn-success" data-dismiss="modal" onclick="resume_from_instructions()">Resume</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    
+    <script src="main.js"></script>
+   </body>
+</html>
