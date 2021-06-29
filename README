@@ -1,8 +1,9 @@
-This is a focus-test I made using front-end tools. I made it for a company I used to work for. The test models a real assessment test
+This is a focus-test I made using front-end tools. I made it for a company I used to work for. The test models a an assessment test
 that is being used for hiring. In this game, a dot moves in a circle in "intervals". At random points, the dot jumps two intervals instead of one.
-You must acknowledge those jumps, by pressing a key. 
+You must acknowledge those jumps, by pressing a the spacebar button. 
 
 You should be able to take the test by downloading this folder, and it should also work for mobile phones.
-You could also find it in the link https://focus-test.000webhostapp.com/.
+
+You could follow this link https://focus-test.000webhostapp.com/. to see it in action
 
 Enjoy!
