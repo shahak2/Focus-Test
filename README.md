@@ -4,6 +4,10 @@ You must acknowledge those jumps, by pressing the spacebar button.
 
 You should be able to take the test by downloading this folder, and it should also work for mobile phones.
 
-You could follow this link https://focus-test.000webhostapp.com/. to see it in action
+See it in action:
 
-Enjoy!
+
+
+https://user-images.githubusercontent.com/47245335/135728457-ef6932ac-5112-4ea6-b67f-65dc801116d3.mp4
+
+
